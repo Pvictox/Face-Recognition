@@ -1,28 +1,37 @@
 import numpy as np
 import cv2
-hog = cv2.HOGDescriptor()
- im = cv2.imread(sample)
- h = hog.compute(im)
-faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-cap = cv2.VideoCapture(0)
-cap.set(3,640) # set Width
-cap.set(4,480) # set Height
-while True:
-    ret, img = cap.read()
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    faces = faceCascade.detectMultiScale(
-        gray,     
-        scaleFactor=1.2,
-        minNeighbors=5,     
-        minSize=(20, 20)
-    )
-    for (x,y,w,h) in faces:
-        cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
-        roi_gray = gray[y:y+h, x:x+w]
-        roi_color = img[y:y+h, x:x+w]  
-    cv2.imshow('video',img)
-    k = cv2.waitKey(30) & 0xff
-    if k == 27: # press 'ESC' to quit
-        break
-cap.release()
-cv2.destroyAllWindows()
+import dlib
+
+
+
+
+def face_detection_with_cam():
+    hogFaceDetector = dlib.get_frontal_face_detector()
+
+    cap = cv2.VideoCapture(0)
+    cap.set(3, 640)  # set Width
+    cap.set(4, 480)  # set Height
+    while True:
+        ret, img = cap.read()
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+        faces = hogFaceDetector(gray, 1)
+
+        for (i, rect) in enumerate(faces):
+            x = rect.left()
+            y = rect.top()
+            w = rect.right() - x
+            h = rect.bottom() - y
+            #draw a rectangle
+            cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        
+        cv2.imshow("Image", img)
+
+        k = cv2.waitKey(30) & 0xff
+        if k == 27:  # press 'ESC' to quit
+            break
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+face_detection_with_cam()
