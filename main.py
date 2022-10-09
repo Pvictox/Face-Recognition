@@ -9,14 +9,16 @@ import andoid_cam
 
 haar_Classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
-#template_matching.face_detection_with_image('img/template_jao.png', 'img/teste_img.jpg')
+#template_matching.face_detection_with_Cam('android', 'img/template.jpg')
+
+template_matching.template_matching_with_cascade('android', haar_Classifier)
 
 #andoid_cam.start()
 #hogFaceDetector = dlib.get_frontal_face_detector()
 
 #Caso teste HAAR
 #cascade_boosting.face_detection_image(haar_Classifier, 'img/teste_img.jpg', 'haar')
-cascade_boosting.face_detection_with_cam(haar_Classifier, 'haar', 'android')
+#cascade_boosting.face_detection_with_cam(haar_Classifier, 'haar', 'android')
 
 #Caso teste HOG
 #cascade_boosting.face_detection_image(hogFaceDetector, 'img/teste_img.jpg', 'hog')
