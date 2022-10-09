@@ -1,3 +1,4 @@
+from tkinter import Scale
 import cv2
 import requests
 import imutils
@@ -6,7 +7,32 @@ import numpy as np
 #Flag cam vai dizer se vai usar web cam tradicional ou do android 
  # {'webcam' ou 'android'}
 
+
+
+
 url = "http://10.0.50.5:8080/shot.jpg"
+
+
+
+def get_template_Cascade(current_frame, classifier):
+    gray_frame = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY)
+    gray_frame = cv2.equalizeHist(gray_frame)
+    faces = classifier.detectMultiScale(
+                    gray_frame,     
+                    scaleFactor=1.2,
+                    minNeighbors=5,     
+                    minSize=(20, 20)
+                )
+    templates = []
+
+    for face in faces:
+        (x,y,w,h) = face
+        face = gray_frame[y:y+h, x: x+h]
+        templates.append(face)
+    
+    return templates
+
+
 def face_detection_with_cam(classifier, flag, flag_cam):
     
     if (flag_cam == 'webcam'):
